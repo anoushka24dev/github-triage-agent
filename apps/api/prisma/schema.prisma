@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Repository {
+  id           String        @id @default(cuid())
+  owner        String
+  name         String
+  workflowRuns WorkflowRun[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model WorkflowRun {
+  id            String         @id @default(cuid())
+  githubRunId   BigInt         @unique
+  workflowName  String
+  branch        String
+  commitSha     String
+  status        String
+  conclusion    String?
+
+  startedAt     DateTime
+  completedAt   DateTime?
+
+
+  repositoryId  String
+  repository    Repository     @relation(fields: [repositoryId], references: [id])
+
+  jobs          WorkflowJob[]
+
+  createdAt     DateTime @default(now())
+}
+
+model WorkflowJob {
+  id             String       @id @default(cuid())
+  name           String
+  status         String
+
+  workflowRunId  String
+  workflowRun    WorkflowRun  @relation(fields: [workflowRunId], references: [id])
+
+  createdAt      DateTime @default(now())
+}

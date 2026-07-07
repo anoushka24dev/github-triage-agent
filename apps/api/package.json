@@ -12,10 +12,12 @@
     "check": "tsc --noEmit"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "fastify": "^5.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "prisma": "^6.19.3",
     "tsx": "^4.0.0",
     "typescript": "^5.9.0"
   }
